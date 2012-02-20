@@ -4,8 +4,9 @@
  */
 
 object Versions {
-	val spring = "3.1.0.RELEASE"
+	val spring = "3.1.1.RELEASE"
 	val slf4j = "1.6.4"
+	val logback = "1.0.0"
 	val scalatest = "1.6.1"
 	val mockito = "1.8.5"
 	val dbcp = "1.4"
