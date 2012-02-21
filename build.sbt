@@ -19,7 +19,8 @@ libraryDependencies ++= Seq("org.springframework" % "spring-jdbc" % Versions.spr
 							"javax.servlet" % "jstl" % Versions.jstl,
 							"taglibs" % "standard" % Versions.taglibs,
 							"javax.servlet" % "servlet-api" % Versions.servlet % "provided",
-							"org.eclipse.jetty" % "jetty-webapp" % Versions.jetty % "container")
+							"org.eclipse.jetty" % "jetty-webapp" % Versions.jetty % "container",
+							"org.codehaus.groovy" % "groovy-all" % Versions.groovy)
 											
 publishMavenStyle := true
 
