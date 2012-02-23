@@ -1,10 +1,8 @@
 package config
 
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.ComponentScan
 
 @Configuration
-class AppConfig {
-
-  
-  
-}
+@ComponentScan(Array("org.nate.service", "org.nate.springapp"))
+class AppConfig 

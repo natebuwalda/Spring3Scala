@@ -5,3 +5,5 @@ project/project/
 project/target/
 .project
 bin/
+.idea/
+.idea_modules/
