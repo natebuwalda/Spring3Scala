@@ -4,8 +4,12 @@ import org.springframework.stereotype.Component
 import collection.{Seq, mutable}
 import java.lang.String
 
+trait RecordValidator {
+  def validate(record: String): Option[List[String]]
+}
+
 @Component
-class UserRecordValidator extends {
+class UserRecordValidator extends RecordValidator {
   
   def validate(record: String): Option[List[String]] = {
     val errors = mutable.ListBuffer[String]()

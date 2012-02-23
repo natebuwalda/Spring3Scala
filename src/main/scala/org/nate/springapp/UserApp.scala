@@ -1,9 +1,6 @@
 package org.nate.springapp
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
-import org.springframework.context.ApplicationContext
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.nate.Logging
 
 object SpringApp extends App with Logging {
@@ -13,5 +10,9 @@ object SpringApp extends App with Logging {
   appCtx.scan("config")
   appCtx.refresh
 	
+  val userLoader: UserLoader = appCtx.getBean("stringUserLoader", classOf[UserLoader])
+  val result = userLoader.load("bob,evans,40")
+  logger.info(result)
+  
   logger.info("Spring User Load Batch Application done")
 }

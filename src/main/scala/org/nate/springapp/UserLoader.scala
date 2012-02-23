@@ -1,19 +1,49 @@
 package org.nate.springapp
 
 import org.springframework.stereotype.Component
+import org.springframework.beans.factory.annotation.{Qualifier, Autowired}
+import org.nate.validator.RecordValidator
+import org.nate.Logging
+import org.nate.service.UserService
 
 trait UserLoader {
-  def load(loadInfo: String): String
-}
+  self: CommonUserLoaderDependencies with Logging =>
 
-@Component
-class StringUserLoader extends UserLoader {
-  def load(loadInfo: String): String = {
-    "User(Nate Buwalda, 33) was added"
+  def load(loadInfo: String): String
+
+  protected def handleRecord(record: String): String = {
+    recordValidator.validate(record) match {
+      case Some(errors) => {
+        errors foreach { error => logger.error(error) }
+        "Failed to load the user record (%s)".format(record)
+      }
+      case None => {
+        val user = userService.create(record)
+        "%s was added".format(user)
+      }
+    }
   }
 }
 
+trait CommonUserLoaderDependencies {
+  
+  @Autowired
+  @Qualifier("userRecordValidator")
+  val recordValidator: RecordValidator = null
+
+  @Autowired
+  @Qualifier("baseUserService")
+  val userService: UserService = null
+}
+
 @Component
-class FileUserLoader extends UserLoader {
+class StringUserLoader extends UserLoader with CommonUserLoaderDependencies with Logging {
+  
+  def load(loadInfo: String): String = handleRecord(loadInfo)
+}
+
+@Component
+class FileUserLoader extends UserLoader with CommonUserLoaderDependencies with Logging {
+  
   def load(loadInfo: String): String = null
 }
