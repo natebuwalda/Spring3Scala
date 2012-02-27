@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.{Qualifier, Autowired}
 import org.nate.validator.RecordValidator
 import org.nate.Logging
 import org.nate.service.UserService
+import java.nio.file.{Files, Paths}
+import java.nio.charset.Charset
+import scala.collection.JavaConverters._
 
 trait UserLoader {
   self: CommonUserLoaderDependencies with Logging =>
@@ -45,5 +48,14 @@ class StringUserLoader extends UserLoader with CommonUserLoaderDependencies with
 @Component
 class FileUserLoader extends UserLoader with CommonUserLoaderDependencies with Logging {
   
-  def load(loadInfo: String): String = null
+  def load(loadInfo: String): String = {
+    val userFile = Paths.get(loadInfo)
+    val lines = Files.readAllLines(userFile, Charset.defaultCharset()).asScala
+    lines foreach { line => {
+        val recordResult: String = handleRecord(line)
+        logger.info(recordResult)
+      }
+    }
+    "%s users added successfully".format(lines.size)
+  }
 }

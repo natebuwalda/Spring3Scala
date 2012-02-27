@@ -44,4 +44,20 @@ class UserRecordValidatorTest extends FlatSpec with ShouldMatchers {
     }
   }
 
+  it should "be negative for a null record" in {
+    val errorMessages = validator.validate(null)
+    errorMessages match {
+      case None => fail("Excpected an error message")
+      case Some(errors) => errors(0) should be("Record cannot be empty")
+    }
+  }
+
+  it should "be negative for an empty record" in {
+    val errorMessages = validator.validate("")
+    errorMessages match {
+      case None => fail("Excpected an error message")
+      case Some(errors) => errors(0) should be("Record cannot be empty")
+    }
+  }
+
 }

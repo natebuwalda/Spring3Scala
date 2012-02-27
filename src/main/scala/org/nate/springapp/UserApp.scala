@@ -9,10 +9,20 @@ object SpringApp extends App with Logging {
   private val appCtx = new AnnotationConfigApplicationContext
   appCtx.scan("config")
   appCtx.refresh
-	
-  val userLoader: UserLoader = appCtx.getBean("stringUserLoader", classOf[UserLoader])
-  val result = userLoader.load("bob,evans,40")
+
+	private val runType: String = args(0)
+	private val command: String = args(1)
+
+  lazy val userLoader: UserLoader = {
+    runType match {
+      case "single" => appCtx.getBean("stringUserLoader", classOf[UserLoader])
+      case "file" => appCtx.getBean("fileUserLoader", classOf[UserLoader])
+      case _ => throw new IllegalArgumentException("Please specify single or file entry")
+    }
+  }
+
+  val result = userLoader.load(command)
   logger.info(result)
-  
+
   logger.info("Spring User Load Batch Application done")
 }
