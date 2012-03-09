@@ -2,10 +2,9 @@ package org.nate.springapp
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.nate.Logging
-import org.springframework.beans.factory.annotation.{Qualifier, Autowire}
 
 object SpringApp extends App with Logging {
-  
+
   logger.info("Starting User Load Batch Application")
   
   private val appCtx = new AnnotationConfigApplicationContext
