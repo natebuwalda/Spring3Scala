@@ -2,6 +2,8 @@ package config
 
 import org.springframework.context.annotation.{Bean, Configuration, ComponentScan}
 import org.slf4j.{LoggerFactory, Logger}
+import org.apache.commons.dbcp.BasicDataSource
+import org.springframework.jdbc.core.JdbcTemplate
 
 
 @Configuration
@@ -34,6 +36,18 @@ class AppConfig {
     }
   }
 
+  @Bean
+  def datasource: BasicDataSource = {
+    new BasicDataSource {
+      setUsername("sa")
+      setPassword("")
+      setDriverClassName("org.h2.Driver")
+      setUrl("jdbc:h2:tcp://localhost/test")
+    }
+  }
+
+  @Bean
+  def jdbcTemplate: JdbcTemplate = new JdbcTemplate(datasource)
 
 }
 
