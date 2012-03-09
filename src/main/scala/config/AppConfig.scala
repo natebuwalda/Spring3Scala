@@ -1,6 +1,8 @@
 package config
 
-import org.springframework.context.annotation.{Configuration, ComponentScan}
+import org.springframework.context.annotation.{Bean, Configuration, ComponentScan}
+import org.slf4j.{LoggerFactory, Logger}
+
 
 @Configuration
 @ComponentScan(Array("org.nate.service",
@@ -8,7 +10,30 @@ import org.springframework.context.annotation.{Configuration, ComponentScan}
                      "org.nate.validator"))
 class AppConfig {
 
-//  lazy val logger: Logger = LoggerFactory.getLogger(this.getClass())
-//  @Bean
-//  def infoLog: Function1[]
+  @Bean
+  def infoLog: (Class[_], String) => Unit = {
+    (clazz: Class[_], message: String) => {
+      val logger: Logger = LoggerFactory.getLogger(clazz)
+      logger.info(message)
+    }
+  }
+
+  @Bean
+  def errorLog: (Class[_], String) => Unit = {
+    (clazz: Class[_], message: String) => {
+      val logger: Logger = LoggerFactory.getLogger(clazz)
+      logger.error(message)
+    }
+  }
+
+  @Bean
+  def debugLog: (Class[_], String) => Unit = {
+    (clazz: Class[_], message: String) => {
+      val logger: Logger = LoggerFactory.getLogger(clazz)
+      logger.error(message)
+    }
+  }
+
+
 }
+

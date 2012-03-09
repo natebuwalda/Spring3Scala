@@ -17,7 +17,7 @@ trait UserLoader {
   protected def handleRecord(record: String): String = {
     recordValidator.validate(record) match {
       case Some(errors) => {
-        errors foreach { error => logger.error(error) }
+        errors foreach { error => errorLog(error) }
         "Failed to load the user record (%s)".format(record)
       }
       case None => {
@@ -41,19 +41,17 @@ trait CommonUserLoaderDependencies {
 
 @Component
 class StringUserLoader extends UserLoader with CommonUserLoaderDependencies with Logging {
-  
   def load(loadInfo: String): String = handleRecord(loadInfo)
 }
 
 @Component
 class FileUserLoader extends UserLoader with CommonUserLoaderDependencies with Logging {
-  
   def load(loadInfo: String): String = {
     val userFile = Paths.get(loadInfo)
     val lines = Files.readAllLines(userFile, Charset.defaultCharset()).asScala
     lines foreach { line => {
         val recordResult: String = handleRecord(line)
-        logger.info(recordResult)
+        infoLog(recordResult)
       }
     }
     "%s users added successfully".format(lines.size)
